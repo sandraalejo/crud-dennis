@@ -46,24 +46,24 @@ public class UserController {
 	return ResponseEntity.ok().body(allUser);
 	}
 
-	@GetMapping("/{parameter}/{name}")
-	public ResponseEntity<List<User>> getUserByName(@PathVariable String parameter,@PathVariable String name) {
-			System.out.println("Escribio parameter " + parameter + "y en name" + name);
-		List<User> allUser =  userService.getUsersByName(name);
+	@GetMapping("/{parameter}/{value}")
+	public ResponseEntity<List<User>> getUserByName(@PathVariable String parameter,@PathVariable String value) {
+		List<User> allUser =  userService.getUsersByParam(parameter, value);
+		/*List<User> allUser =  userService.getUsersByName(name);*/
 		if(allUser.isEmpty() == true) {
 			return ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.ok().body(allUser);
 	}
 
-	@GetMapping("/age/{age}")
+	/*@GetMapping("/age/{age}")
 	public ResponseEntity<List<User>> getUserByAge(@PathVariable int age) {
 		List<User> allUser =  userService.getUsersByAge(age);
 		if(allUser.isEmpty() == true) {
 			ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.ok().body(allUser);
-	}
+	}*/
 
 	/// UPDATE
 	@PostMapping("/{id}")
