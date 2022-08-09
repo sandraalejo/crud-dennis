@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.dennis.model.User;
 
-public interface UserMongoRepository extends MongoRepository<User,String>{
+public interface UserRepository extends MongoRepository<User,String>{
 
     @Query("{ 'id' : ?0 }")
     Optional<User> findById(String id);
