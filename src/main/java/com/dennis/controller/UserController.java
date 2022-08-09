@@ -12,7 +12,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.dennis.model.User;
-import com.dennis.repository.UserRepository;
 import com.dennis.service.UserService;
 
 @RestController
@@ -20,22 +19,17 @@ import com.dennis.service.UserService;
 public class UserController {
 	private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	@Autowired
-	private final UserRepository userRepository;
-	@Autowired 
 	private final UserService userService;
-	
-	
-	public UserController(UserRepository userRepository, UserService userService) {
-		this.userRepository = userRepository;
+
+	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 
 	/// CREATE
 	@PostMapping("")
-	//@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<List<User>> createUsers(@RequestBody List<User> users) {
-		List<User> allUser =  userService.createUsers(users);
-		if(allUser.isEmpty() == true) {
+		List<User> allUser = userService.createUsers(users);
+		if (allUser.isEmpty() == true) {
 			return ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(allUser);
@@ -44,72 +38,53 @@ public class UserController {
 	/// READ
 	@GetMapping("") /// READ USER
 	public ResponseEntity<List<User>> getUsers() {
-		List<User> allUser =  userService.getUsers();
-		if(allUser.isEmpty() == true) {
+		List<User> allUser = userService.getUsers();
+		if (allUser.isEmpty() == true) {
 			ResponseEntity.badRequest().body(allUser);
 		}
-	return ResponseEntity.ok().body(allUser);
+		return ResponseEntity.ok().body(allUser);
 	}
 
 	@GetMapping("/{parameter}/{value}")
-	public ResponseEntity<List<User>> getUserByParam(@PathVariable String parameter,@PathVariable String value) {
-		List<User> allUser =  userService.getUsersByParam(parameter, value);
-		if(allUser.isEmpty() == true) {
+	public ResponseEntity<List<User>> getUserByParam(@PathVariable String parameter, @PathVariable String value) {
+		List<User> allUser = userService.getUsersByParam(parameter, value);
+		if (allUser.isEmpty() == true) {
 			return ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.ok().body(allUser);
 	}
 
-	/*@GetMapping("/age/{age}")
-	public ResponseEntity<List<User>> getUserByAge(@PathVariable int age) {
-		List<User> allUser =  userService.getUsersByAge(age);
-		if(allUser.isEmpty() == true) {
-			ResponseEntity.badRequest().body(allUser);
-		}
-		return ResponseEntity.ok().body(allUser);
-	}*/
-
 	/// UPDATE
 	@PostMapping("/{id}")
-	public User updateUserById(@RequestBody User newUser, @PathVariable String id) {
-		newUser.setId(id);
-		return userRepository.save(newUser);
+	public ResponseEntity<User> updateUserById(@RequestBody User newUser, @PathVariable String id) {
+
+		User User = userService.updateUserById(newUser, id);
+
+		if (ObjectUtils.isEmpty(User) == true) {
+			return ResponseEntity.badRequest().body(User);
+		}
+		return ResponseEntity.ok().body(User);
 	}
 
 	// DELETE
 	@DeleteMapping("/{id}")
 	public ResponseEntity<User> deleteUserById(@PathVariable String id) {
 		User User = userService.deleteUserById(id);
-		
-		if(ObjectUtils.isEmpty(User) == true) {
+
+		if (ObjectUtils.isEmpty(User) == true) {
 			return ResponseEntity.badRequest().body(User);
 		}
 		return ResponseEntity.ok().body(User);
 	}
-	
+
 	@DeleteMapping("/{parameter}/{value}")
-	public ResponseEntity<List<User>> deleteUserByParam(@PathVariable String parameter,@PathVariable String value) {
-		List<User> allUser =  userService.deleteUserByParam(parameter, value);
-		/*List<User> allUser =  userService.getUsersByName(name);*/
-		if(allUser.isEmpty() == true) {
+	public ResponseEntity<List<User>> deleteUserByParam(@PathVariable String parameter, @PathVariable String value) {
+		List<User> allUser = userService.deleteUserByParam(parameter, value);
+		if (allUser.isEmpty() == true) {
 			return ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.ok().body(allUser);
 	}
-
-	/*@DeleteMapping("/age/{age}")
-	public List<User> deleteUserByAge(@PathVariable int age) {
-		List<User> Users = userRepository.findByAge(age);
-		userRepository.deleteAll(Users);
-		return Users;
-	}
-
-	@DeleteMapping("/name/{name}")
-	public List<User> deleteUserByName(@PathVariable String name) {
-		List<User> Users = userRepository.findByName(name);
-		userRepository.deleteAll(Users);
-		return Users;
-	}*/
 
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
