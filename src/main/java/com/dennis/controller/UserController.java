@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.dennis.model.User;
@@ -31,9 +32,13 @@ public class UserController {
 
 	/// CREATE
 	@PostMapping("")
-	@ResponseStatus(HttpStatus.CREATED)
-	public List<User> postUser(@RequestBody List<User> users) {
-		return userRepository.saveAll(users);
+	//@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<List<User>> createUsers(@RequestBody List<User> users) {
+		List<User> allUser =  userService.createUsers(users);
+		if(allUser.isEmpty() == true) {
+			return ResponseEntity.badRequest().body(allUser);
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(allUser);
 	}
 
 	/// READ
@@ -47,9 +52,8 @@ public class UserController {
 	}
 
 	@GetMapping("/{parameter}/{value}")
-	public ResponseEntity<List<User>> getUserByName(@PathVariable String parameter,@PathVariable String value) {
+	public ResponseEntity<List<User>> getUserByParam(@PathVariable String parameter,@PathVariable String value) {
 		List<User> allUser =  userService.getUsersByParam(parameter, value);
-		/*List<User> allUser =  userService.getUsersByName(name);*/
 		if(allUser.isEmpty() == true) {
 			return ResponseEntity.badRequest().body(allUser);
 		}
@@ -74,13 +78,26 @@ public class UserController {
 
 	// DELETE
 	@DeleteMapping("/{id}")
-	public User deleteUserById(@PathVariable String id) {
-		User ActualUser = userRepository.findById(id).orElse(null);
-		userRepository.delete(ActualUser);
-		return ActualUser;
+	public ResponseEntity<User> deleteUserById(@PathVariable String id) {
+		User User = userService.deleteUserById(id);
+		
+		if(ObjectUtils.isEmpty(User) == true) {
+			return ResponseEntity.badRequest().body(User);
+		}
+		return ResponseEntity.ok().body(User);
+	}
+	
+	@DeleteMapping("/{parameter}/{value}")
+	public ResponseEntity<List<User>> deleteUserByParam(@PathVariable String parameter,@PathVariable String value) {
+		List<User> allUser =  userService.deleteUserByParam(parameter, value);
+		/*List<User> allUser =  userService.getUsersByName(name);*/
+		if(allUser.isEmpty() == true) {
+			return ResponseEntity.badRequest().body(allUser);
+		}
+		return ResponseEntity.ok().body(allUser);
 	}
 
-	@DeleteMapping("/age/{age}")
+	/*@DeleteMapping("/age/{age}")
 	public List<User> deleteUserByAge(@PathVariable int age) {
 		List<User> Users = userRepository.findByAge(age);
 		userRepository.deleteAll(Users);
@@ -92,7 +109,7 @@ public class UserController {
 		List<User> Users = userRepository.findByName(name);
 		userRepository.deleteAll(Users);
 		return Users;
-	}
+	}*/
 
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
