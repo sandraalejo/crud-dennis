@@ -38,7 +38,7 @@ public class UserService {
 
 	public List<User> getUsersByParam(String param, String value) {
 		List<User> users = Collections.emptyList();
-		;
+		
 		switch (param) {
 		case "name":
 			users = getUsersByName(value);
@@ -56,10 +56,10 @@ public class UserService {
 	}
 
 	public User updateUserById(User newUser, String id) {
-		newUser.setId(id);
 		if (ObjectUtils.isEmpty(newUser) == true) {
 			return null;
 		}
+		newUser.setId(id);
 		return userRepository.save(newUser);
 	}
 
@@ -72,14 +72,14 @@ public class UserService {
 		return ActualUser;
 	}
 
-	public List<User> deleteUserByAge(int age) {
-		List<User> Users = getUsersByAge(age);
+	public List<User> deleteUserByName(String name) {
+		List<User> Users = getUsersByName(name);
 		userRepository.deleteAll(Users);
 		return Users;
 	}
-
-	public List<User> deleteUserByName(String name) {
-		List<User> Users = getUsersByName(name);
+	
+	public List<User> deleteUserByAge(int age) {
+		List<User> Users = getUsersByAge(age);
 		userRepository.deleteAll(Users);
 		return Users;
 	}
