@@ -18,6 +18,9 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public List<User> createUsers(List<User> users) {
+		if ( users == null || users.isEmpty() || users.contains(null) == true) {
+			return null;
+		}
 		return userRepository.saveAll(users);
 	}
 
