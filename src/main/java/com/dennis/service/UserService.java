@@ -18,7 +18,7 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public List<User> createUsers(List<User> users) {
-		if ( users == null || users.isEmpty() || users.contains(null) == true) {
+		if (users == null || users.isEmpty() || users.contains(null) == true) {
 			return null;
 		}
 		return userRepository.saveAll(users);
@@ -38,7 +38,7 @@ public class UserService {
 
 	public List<User> getUsersByParam(String param, String value) {
 		List<User> users = Collections.emptyList();
-		
+
 		switch (param) {
 		case "name":
 			users = getUsersByName(value);
@@ -77,7 +77,7 @@ public class UserService {
 		userRepository.deleteAll(Users);
 		return Users;
 	}
-	
+
 	public List<User> deleteUserByAge(int age) {
 		List<User> Users = getUsersByAge(age);
 		userRepository.deleteAll(Users);

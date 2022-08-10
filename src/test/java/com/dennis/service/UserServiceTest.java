@@ -20,197 +20,222 @@ public class UserServiceTest {
 
 	@InjectMocks
 	UserService userService;
-	//AccountMapping accountMapping;
-	
+	// AccountMapping accountMapping;
+
 	@Mock
 	private UserRepository userRepository;
 
 	private User user;
 	private List<User> userList;
 	private List<User> nullList;
-	//private Currenc yRepository currencyRepository;
+	// private Currenc yRepository currencyRepository;
 
 	@BeforeAll
 	void setUp() {
-		MockitoAnnotations.openMocks(this);	
-		
+		MockitoAnnotations.openMocks(this);
+
 		user = new User();
 		userList = new ArrayList<>();
 		user.setAge(20);
 		user.setName("testUser");
 		userList.add(user);
 		nullList = null;
-	/*	account = new Account();
-		account.setAccountNumber("AccNumber");
-		account.setCustomerId("CustomerID");
-		account.setBranchId("BranchId");
-		account.setAccountTypeCode("AccountTypeCode");
-		account.setCurrencyCode("Pesos Mexicanos");
-		account.setStatusCode("StatusCode");*/
+		/*
+		 * account = new Account(); account.setAccountNumber("AccNumber");
+		 * account.setCustomerId("CustomerID"); account.setBranchId("BranchId");
+		 * account.setAccountTypeCode("AccountTypeCode");
+		 * account.setCurrencyCode("Pesos Mexicanos");
+		 * account.setStatusCode("StatusCode");
+		 */
 	}
+
 	@DisplayName("User creation for UserService")
 	@Test
-	void createUsersTest(){	
+	void createUsersTest() {
 		Assertions.assertNotNull(userService.createUsers(userList));
 	}
+
 	@DisplayName("User creation for UserService with null user")
 	@Test
-	void createUserTestWithNullUser(){	
+	void createUserTestWithNullUser() {
 		userList.add(null);
 		Assertions.assertNull(userService.createUsers(userList));
 	}
-	
+
 	@DisplayName("User creation for UserService with null User list")
 	@Test
-	void createUserTestWithNullUserList(){	
+	void createUserTestWithNullUserList() {
 		Assertions.assertNull(userService.createUsers(nullList));
 	}
+
 	@DisplayName("User creation for UserService with empty User list")
 	@Test
-	void createUserTestWithEmptyUserList(){	
+	void createUserTestWithEmptyUserList() {
 		Assertions.assertNull(userService.createUsers(Collections.emptyList()));
 	}
+
 	@DisplayName("Get Users for UserService")
 	@Test
-	void getUsersTest(){	
+	void getUsersTest() {
 		Assertions.assertNotNull(userService.getUsers());
 	}
+
 	@DisplayName("Get Users by name for UserService")
 	@Test
-	void getUsersTestByName(){	
+	void getUsersTestByName() {
 		Assertions.assertNotNull(userService.getUsersByName("Dennis"));
 	}
+
 	@DisplayName("Get Users by name for UserService with empty name")
 	@Test
-	void getUsersTestByNameWithEmptyName(){	
+	void getUsersTestByNameWithEmptyName() {
 		Assertions.assertNotNull(userService.getUsersByName(""));
 	}
+
 	@DisplayName("Get Users by name for UserService with null name")
 	@Test
-	void getUsersTestByNameWithNullName(){	
+	void getUsersTestByNameWithNullName() {
 		Assertions.assertNotNull(userService.getUsersByName(null));
 	}
+
 	@DisplayName("Get Users by age for UserService")
 	@Test
-	void getUsersByAgeTest(){	
+	void getUsersByAgeTest() {
 		Assertions.assertNotNull(userService.getUsersByAge(10));
 	}
+
 	@DisplayName("Get Users by age for UserService with negative age")
 	@Test
-	void getUsersTestByAgeNegative(){	
+	void getUsersTestByAgeNegative() {
 		Assertions.assertNotNull(userService.getUsersByAge(-1));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case name")
 	@Test
-	void getUsersByParamTestName(){	
+	void getUsersByParamTestName() {
 		Assertions.assertNotNull(userService.getUsersByParam("name", "value"));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case name with value is empty")
 	@Test
-	void getUsersByParamTestNameEmptyValue(){	
+	void getUsersByParamTestNameEmptyValue() {
 		Assertions.assertNotNull(userService.getUsersByParam("name", ""));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case name with value is null")
 	@Test
-	void getUsersByParamTestNameNullValue(){	
+	void getUsersByParamTestNameNullValue() {
 		Assertions.assertNotNull(userService.getUsersByParam("name", null));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case age with value not is numeric")
 	@Test
-	void getUsersByParamTestAgeNotNumeric(){	
+	void getUsersByParamTestAgeNotNumeric() {
 		Assertions.assertNotNull(userService.getUsersByParam("age", "value"));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case age with value is numeric")
 	@Test
-	void getUsersByParamTestAgeNumeric(){	
+	void getUsersByParamTestAgeNumeric() {
 		Assertions.assertNotNull(userService.getUsersByParam("age", "10"));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case age with value is empty")
 	@Test
-	void getUsersByParamTestAge(){	
+	void getUsersByParamTestAge() {
 		Assertions.assertNotNull(userService.getUsersByParam("age", ""));
 	}
+
 	@DisplayName("Get Users by parameter for UserService case age with value is null")
 	@Test
-	void getUsersByParamTestAgeNull(){	
+	void getUsersByParamTestAgeNull() {
 		Assertions.assertNotNull(userService.getUsersByParam("age", null));
 	}
+
 	@DisplayName("Update Users by id for UserService")
 	@Test
-	void updateUserById(){	
+	void updateUserById() {
 		Mockito.when(userRepository.save(user)).thenReturn(user);
 		Assertions.assertNotNull(userService.updateUserById(user, "id"));
 	}
+
 	@DisplayName("Update Users by id for UserService with null user")
 	@Test
-	void updateUserByIdWithNullUser(){	
+	void updateUserByIdWithNullUser() {
 		Assertions.assertNull(userService.updateUserById(null, "id"));
 	}
-	
+
 	@DisplayName("Delete Users by name for UserService")
 	@Test
-	void deleteUsersTestByName(){	
+	void deleteUsersTestByName() {
 		Assertions.assertNotNull(userService.deleteUserByName("value"));
 	}
+
 	@DisplayName("Delete Users by name for UserService with empty name")
 	@Test
-	void deleteUsersTestByNameWithEmptyName(){	
+	void deleteUsersTestByNameWithEmptyName() {
 		Assertions.assertNotNull(userService.deleteUserByName(""));
 	}
+
 	@DisplayName("Delete Users by name for UserService with null name")
 	@Test
-	void deleteUsersTestByNameWithNullName(){
+	void deleteUsersTestByNameWithNullName() {
 		Assertions.assertNotNull(userService.deleteUserByName(null));
 	}
+
 	@DisplayName("Delete Users by age for UserService")
 	@Test
-	void deleteUsersByAgeTest(){	
+	void deleteUsersByAgeTest() {
 		Assertions.assertNotNull(userService.deleteUserByAge(10));
 	}
+
 	@DisplayName("Delete Users by age for UserService with negative age")
 	@Test
-	void deleteUsersTestByAgeNegative(){	
+	void deleteUsersTestByAgeNegative() {
 		Assertions.assertNotNull(userService.deleteUserByAge(-1));
 	}
-	
+
 	@DisplayName("Delete Users by id for UserService")
 	@Test
-	void deleteUserById(){	
-		//Mockito.when(ObjectUtils.isEmpty(user)).thenReturn(true);
-	    Mockito.doReturn(user).when(Mockito.spy(userRepository)).findById("id");
+	void deleteUserById() {
+		// Mockito.when(ObjectUtils.isEmpty(user)).thenReturn(true);
+		Mockito.doReturn(user).when(Mockito.spy(userRepository)).findById("id");
 		Assertions.assertNotNull(userService.deleteUserById("id"));
 	}
-	
-	
+
 	@DisplayName("Delete Users by parameter for UserService case name")
 	@Test
-	void deleteUsersByParamTestName(){	
+	void deleteUsersByParamTestName() {
 		Assertions.assertNotNull(userService.deleteUserByParam("name", "value"));
 	}
+
 	@DisplayName("Delete Users by parameter for UserService case name with value is empty")
 	@Test
-	void deleteUsersByParamTestNameEmptyValue(){	
+	void deleteUsersByParamTestNameEmptyValue() {
 		Assertions.assertNotNull(userService.deleteUserByParam("name", ""));
 	}
+
 	@DisplayName("Delete Users by parameter for UserService case name with value is null")
 	@Test
-	void deleteUsersByParamTestNameNullValue(){	
+	void deleteUsersByParamTestNameNullValue() {
 		Assertions.assertNotNull(userService.deleteUserByParam("name", null));
 	}
 
 	@DisplayName("Delete Users by parameter for UserService case age with value is numeric")
 	@Test
-	void deleteUsersByParamTestAgeNumeric(){	
+	void deleteUsersByParamTestAgeNumeric() {
 		Assertions.assertNotNull(userService.deleteUserByParam("age", "10"));
 	}
+
 	@DisplayName("Delete Users by parameter for UserService case age with value is empty")
 	@Test
-	void deleteUsersByParamTestAgeWithEmptyValue(){	
+	void deleteUsersByParamTestAgeWithEmptyValue() {
 		Assertions.assertNotNull(userService.deleteUserByParam("age", ""));
 	}
+
 	@DisplayName("Delete Users by parameter for UserService case age with value is null")
 	@Test
-	void deleteUsersByParamTestAgeNull(){	
+	void deleteUsersByParamTestAgeNull() {
 		Assertions.assertNotNull(userService.deleteUserByParam("age", null));
 	}
 
