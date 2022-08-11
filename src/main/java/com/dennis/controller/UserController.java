@@ -29,7 +29,7 @@ public class UserController {
 	@PostMapping("")
 	public ResponseEntity<List<User>> createUsers(@RequestBody List<User> users) {
 		List<User> allUser = userService.createUsers(users);
-		if (allUser.isEmpty() == true) {
+		if (allUser == null || allUser.isEmpty() == true) {
 			return ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(allUser);
@@ -40,7 +40,7 @@ public class UserController {
 	public ResponseEntity<List<User>> getUsers() {
 		List<User> allUser = userService.getUsers();
 		if (allUser.isEmpty() == true) {
-			ResponseEntity.badRequest().body(allUser);
+			return ResponseEntity.badRequest().body(allUser);
 		}
 		return ResponseEntity.ok().body(allUser);
 	}

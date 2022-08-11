@@ -20,7 +20,6 @@ public class UserServiceTest {
 
 	@InjectMocks
 	UserService userService;
-	// AccountMapping accountMapping;
 
 	@Mock
 	private UserRepository userRepository;
@@ -28,7 +27,6 @@ public class UserServiceTest {
 	private User user;
 	private List<User> userList;
 	private List<User> nullList;
-	// private Currenc yRepository currencyRepository;
 
 	@BeforeAll
 	void setUp() {
@@ -40,13 +38,7 @@ public class UserServiceTest {
 		user.setName("testUser");
 		userList.add(user);
 		nullList = null;
-		/*
-		 * account = new Account(); account.setAccountNumber("AccNumber");
-		 * account.setCustomerId("CustomerID"); account.setBranchId("BranchId");
-		 * account.setAccountTypeCode("AccountTypeCode");
-		 * account.setCurrencyCode("Pesos Mexicanos");
-		 * account.setStatusCode("StatusCode");
-		 */
+
 	}
 
 	@DisplayName("User creation for UserService")
@@ -195,13 +187,15 @@ public class UserServiceTest {
 		Assertions.assertNotNull(userService.deleteUserByAge(-1));
 	}
 
+	// TEST CON DUDA
 	@DisplayName("Delete Users by id for UserService")
 	@Test
 	void deleteUserById() {
-		// Mockito.when(ObjectUtils.isEmpty(user)).thenReturn(true);
-		Mockito.doReturn(user).when(Mockito.spy(userRepository)).findById("id");
-		Assertions.assertNotNull(userService.deleteUserById("id"));
+		// Mockito.when(userRepository.findById("id").orElse(null)).thenReturn(Collections.emptyList());
+		User userreturn = userService.deleteUserById("id");
+		Assertions.assertNotNull(userreturn);
 	}
+	/// TEST CON DUDA
 
 	@DisplayName("Delete Users by parameter for UserService case name")
 	@Test
