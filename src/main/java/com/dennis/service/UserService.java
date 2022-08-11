@@ -12,7 +12,7 @@ import com.dennis.model.User;
 import com.dennis.repository.UserRepository;
 
 /**
- * User Service
+ * UserService
  *
  * Esta clase contiene todos los métodos que necesitará el UserController para
  * recibir y ejecutar todas las peticiones.
